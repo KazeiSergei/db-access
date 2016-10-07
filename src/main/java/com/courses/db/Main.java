@@ -28,7 +28,7 @@ public class Main {
         }
 
         StudentDao studentDao = new StudentDao();
-        //studentDao.insertStudent(new Student("qqqq","444"));
+        //studentDao.insertStudent(new Student(9,"qqqq","444"));
         List<Student> students = studentDao.getAll();
         for(Student s : students){
             System.out.println(s);
