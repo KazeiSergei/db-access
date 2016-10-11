@@ -1,35 +1,35 @@
-package com.courses.db.dao;
+package com.courses.db.dao.testNG;
 
+
+import com.courses.db.dao.SubjectDao;
 import com.courses.db.dto.Subject;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.util.List;
 
+public class SubjectDaoTestNG {
 
-public class SubjectDaoTest {
     private static SubjectDao subjectDao;
 
+
     @BeforeClass
-    public static void initSubjectDaoBeforeClass() {
+    public static void beforeClass() {
         subjectDao = new SubjectDao();
     }
 
-
-
-    @Before
-    public void initSubjectDao() {
+    @BeforeMethod
+    public void setUp() {
         subjectDao.insertSubject(new Subject("Test_1"));
         subjectDao.insertSubject(new Subject("Test_2"));
         subjectDao.insertSubject(new Subject("Test_3"));
-
     }
 
-    @After
+    @AfterMethod
     public void tearDown() {
         List<Subject> subjects = subjectDao.getAllSudject();
         for (Subject s : subjects) {
@@ -38,7 +38,7 @@ public class SubjectDaoTest {
     }
 
     @AfterClass
-    public static void tearDownBeforeClass() {
+    public static void afterClass() {
         subjectDao.close();
     }
 
@@ -50,15 +50,15 @@ public class SubjectDaoTest {
         int id2 = subject.getId();
         subject = subjectDao.getAllSudject().stream().filter(x -> "Test_3".equals(x.getName())).findFirst().get();
         int id3 = subject.getId();
-        Assert.assertEquals(subjectDao.getSubjectById(id1).getName(), "Test_1");
-        Assert.assertEquals(subjectDao.getSubjectById(id2).getName(), "Test_2");
-        Assert.assertEquals(subjectDao.getSubjectById(id3).getName(), "Test_3");
+        Assert.assertEquals("Test_1",subjectDao.getSubjectById(id1).getName());
+        Assert.assertEquals("Test_2",subjectDao.getSubjectById(id2).getName());
+        Assert.assertEquals("Test_3",subjectDao.getSubjectById(id3).getName());
     }
 
     @Test
     public void testGetAllSudject() throws Exception {
         List<Subject> subjects = subjectDao.getAllSudject();
-        Assert.assertEquals("Should be three subject ib database", 3, subjects.size());
+        Assert.assertEquals( 3, subjects.size());
     }
 
 
@@ -69,6 +69,8 @@ public class SubjectDaoTest {
         int id1 = subject.getId();
         subject = new Subject("Test1_1");
         subjectDao.updateSubject(subject,id1);
-        Assert.assertEquals(subjectDao.getSubjectById(id1).getName(), "Test1_1");
+        Assert.assertEquals( "Test1_1", subjectDao.getSubjectById(id1).getName());
     }
+
+
 }
